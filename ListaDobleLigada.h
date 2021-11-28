@@ -17,9 +17,6 @@ class ListaDobleLigada{
 
         void push_front(const T &dato);
         void push_back(const T &dato);
-        void insert(const T &dato, size_t p);
-        void erase(size_t p);
-        void remove_if(const T& dato);
 
         size_t size();
 
@@ -33,24 +30,6 @@ class ListaDobleLigada{
         void print_reverse();
         T* front();
         T* back();
-
-        void pop_front();
-        void pop_back();
-
-        T* operator[](size_t p){
-            size_t pos = 0;
-            Nodo *temp = head;
-
-            while(temp != nullptr){
-                if(p == pos){
-                    return temp->dato;
-                }
-                temp = temp->sig;
-                pos++;
-            }
-
-            return nullptr;
-        }
 
     private:
         struct Nodo{
@@ -76,9 +55,7 @@ ListaDobleLigada<T>::ListaDobleLigada(){
 
 template <class T>
 ListaDobleLigada<T>::~ListaDobleLigada(){
-    while(!empty()){
-        pop_front();
-    }
+    //Eliminar todos los nodos
 }
 
 template <class T>
@@ -168,135 +145,6 @@ T* ListaDobleLigada<T>::back(){
     }
     else{
         return &tail->dato;
-    }
-}
-
-template <class T>
-void ListaDobleLigada<T>::pop_front(){
-    if(empty()){
-        cout << "Lista vacia." << endl;
-    }
-    else if(cont == 1){
-        delete head;
-        head = nullptr;
-        tail = nullptr;
-        cont--;
-    }
-    else{
-        Nodo *temp = head->sig;
-
-        head->sig->ant = nullptr;
-        delete head;
-        head = temp;
-
-        cont--;
-    }
-}
-
-template <class T>
-void ListaDobleLigada<T>::pop_back(){
-    if(empty()){
-        cout << "Lista vacia." << endl;
-    }
-    else if(cont == 1){
-        delete tail;
-        head = nullptr;
-        tail = nullptr;
-        cont--;
-    }
-    else{
-        Nodo *temp = tail->ant;
-        temp->sig = nullptr;
-
-        delete tail;
-        tail = temp;
-        cont--;
-    }
-}
-
-template <class T>
-void ListaDobleLigada<T>::insert(const T &dato, size_t p){
-    if(p >= cont){
-        cout << "Posicion no valida." << endl;
-    }
-    else if(p == 0){
-        push_front(dato);
-    }
-    else{
-        Nodo *temp = head->sig;
-        size_t pos = 1;
-
-        while(temp != nullptr){
-            if(p == pos){
-                Nodo *nodo = new Nodo(dato);
-
-                nodo->sig = temp;
-                nodo->ant = temp->ant;
-
-                temp->ant->sig = nodo;
-                nodo->sig->ant = nodo;
-
-                cont++;
-
-                break;
-            }
-            temp = temp->sig;
-            pos++;
-        }
-    }
-}
-
-template <class T>
-void ListaDobleLigada<T>::erase(size_t p){
-    if(p >= cont){
-        cout << "Posicion no valida" << endl;
-    }
-    else if(p == 0){
-        pop_front();
-    }
-    else if(p == cont - 1){
-        pop_back();
-    }
-    else{
-        Nodo *temp = head->sig;
-        size_t pos = 1;
-
-        while(temp != nullptr){
-            if(p == pos){
-                temp->ant->sig = temp->sig;
-                temp->sig->ant = temp->ant;
-
-                delete temp;
-                cont--;
-
-                break;
-            }
-            temp = temp->sig;
-            pos++;
-        }
-    }
-}
-
-template <class T>
-void ListaDobleLigada<T>::remove_if(const T& dato){   
-    if(empty()){
-        cout << "Lista vacia." << endl;
-    }
-
-    while(head!=nullptr && head->dato==dato){
-        head=head->sig;
-    }
-
-    Nodo *temp = head;
-    while(temp->sig != nullptr){
-        if(temp->sig->dato == dato){
-            Nodo *p = temp->sig;
-            temp->sig = temp->sig->sig;
-            delete p;
-        }
-        else{
-            temp = temp->sig;
-        }
     }
 }
 
